@@ -96,4 +96,4 @@ function addRow(container, rowId, grid) {
   grid.addRow(mRow);
 }
 
-init();
+$(init);
