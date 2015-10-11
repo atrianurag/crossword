@@ -5,6 +5,7 @@ function word(element) {
 	this.length = element.answer.length;
 	this.rowId = element.rowId;
 	this.colId = element.colId;
+	this.direction = element.direction;
 }
 
 function data() {

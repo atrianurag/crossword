@@ -11,4 +11,8 @@ matrixRow.prototype.log = function() {
     box.log();
     console.log('\n');    
   });
-}
+};
+
+matrixRow.prototype.getBox = function(id) {
+	return this.boxes[id];
+};

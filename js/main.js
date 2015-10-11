@@ -1,8 +1,13 @@
+window.app = {
+  maxRows: 13,
+  maxCols: 12
+};
+
 var hiddenBoxes = [];
 function initHiddenBoxes() {
-  hiddenBoxes.push([0, 1, 2]);
-  hiddenBoxes.push([5, 6, 9]);
-  hiddenBoxes.push([5, 8, 3]);
+  // hiddenBoxes.push([0, 1, 2]);
+  // hiddenBoxes.push([5, 6, 9]);
+  // hiddenBoxes.push([5, 8, 3]);
 }
 
 function init() {
@@ -10,7 +15,7 @@ function init() {
   initHiddenBoxes();
   var grid = new matrix();
   var container = $('.container');
-  for (var i = 0; i < 12; ++i) {
+  for (var i = 0; i < window.app.maxRows; ++i) {
     addRow(container, i, grid);
   }
   
@@ -18,8 +23,9 @@ function init() {
   var values = new data();
   values.initialiseData(config);
   
+  grid.setKeyHandlers();
   // Set the values in the gird.
-  grid.setValues(values);
+  grid.setValues(values.words);
 }
 
 function addRow(container, rowId, grid) {
@@ -29,18 +35,20 @@ function addRow(container, rowId, grid) {
   
   var mRow = new matrixRow();
   
-  for (var i = 0; i < 10; ++i) {
+  for (var i = 0; i < window.app.maxCols; ++i) {
     var box = $("<div contenteditable></div>");
+    var hidden = false;
     box.addClass("box");
-    box.attr('id', i);
+    box.attr('id', rowId * 1000 + i);
     if (typeof hiddenBoxes[rowId] == 'object' && hiddenBoxes[rowId].indexOf(i) != -1) {
       box.addClass('no-show');
+      hidden = true;
     }
     row.append(box);
     container.append(row);
     
     // Update the matrix.
-    var mBox = new matrixBox(box, i);
+    var mBox = new matrixBox(box, rowId * 1000 + i, hidden);
     mRow.addBox(mBox);    
   }
   grid.addRow(mRow);
