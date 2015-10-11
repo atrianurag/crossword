@@ -6,13 +6,20 @@ function initHiddenBoxes() {
 }
 
 function init() {
+  // Create the grid.
   initHiddenBoxes();
   var grid = new matrix();
   var container = $('.container');
-  for (var i = 0; i < 8; ++i) {
+  for (var i = 0; i < 12; ++i) {
     addRow(container, i, grid);
   }
-  grid.log();
+  
+  // Get the values.
+  var values = new data();
+  values.initialiseData(config);
+  
+  // Set the values in the gird.
+  grid.setValues(values);
 }
 
 function addRow(container, rowId, grid) {

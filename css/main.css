@@ -4,20 +4,20 @@
   /* Border */
   border-style: solid;
   border-color: #909090;
-  border-width: 10px;
+  border-width: 6px;
   
   /* Margin */
   margin: 0.25% 0.25%;
   
   /* Size */
-  height: 90px;
-  width: 90px;
+  height: 60px;
+  width: 60px;
   
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 60px;
-  border-radius: 10px;
+  border-radius: 6px;
   font-family: Open Sans;
   color: transparent;
   text-shadow : 0 0 0 #000;

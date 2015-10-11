@@ -12,3 +12,7 @@ matrixBox.prototype.log = function() {
 matrixBox.prototype.highlight = function() {
   this.jQueryBox.addClass('highlight');
 };
+
+matrixBox.prototype.setText = function(text) {
+	this.jQueryBox.html(text);
+};
