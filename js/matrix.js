@@ -110,25 +110,49 @@ matrix.prototype.setValues = function(values) {
 
 matrix.prototype.setKeyHandlers = function() {
   var that = this;
-  var helpSetCallback = function(box) {
+  var chars = 'abcdefghijklmnopqrstuvwxyz';
+  var helpSetKeyDownCallback = function(box) {
     return function(event) {
-      box.setText(box.getText().substr(box.getText.length));
+      if (event.which >= 65 && event.which <= 90) {
+        // 'a' - 'z'.
+
+        // Note that we just clear the content of the div. This is because the after the keydown
+        // event has been handled the browser will set the text of the div to the pressed key
+        // anyway. This is also why we can't handle other keys here as if suppose we change the
+        // focused box on -> key, then the browser will set the text of that div.
+        // Other keys are handled in the keyup handler.
+        box.setText('');
+      } else if (event.which == 8 || event.which == 46) {
+        // backspace | delete.
+        box.setText('');
+      }
+    }
+  }
+
+  var helpSetKeyUpCallback = function(box) {
+    return function (event) {
       switch (event.which) {
-        case 37:
-          that.getPreviousBox(box).focus();
-          break;
-        case 8:
-          box.setText('');
-          break;
-        default:
-          that.getNextBox(box).focus();
+      case 37:
+        that.getPreviousBox(box).focus();
+        break;
+      // We shouldn't change the focus on backspace.
+      case 8:
+      // We shouldn't change the focus on delete.
+      case 46:
+      // This will change, but for now the up and down arrows don't do anything.
+      case 38:
+      case 40:
+        break;
+      default:
+        that.getNextBox(box).focus();
       }
     }
   }
   this.rows.forEach(function(row) {
     for (var i = 0; i < window.app.maxCols; ++i) {
       var box = row.getBox(i);
-      box.setKeyHandler(helpSetCallback(box));
+      box.setKeyHandler('keyup', helpSetKeyUpCallback(box));
+      box.setKeyHandler('keydown', helpSetKeyDownCallback(box));
     }
   });
 };

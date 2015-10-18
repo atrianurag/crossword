@@ -19,7 +19,7 @@ matrixBox.prototype.setText = function(text) {
 };
 
 matrixBox.prototype.getText = function(text) {
-	return this.jQueryBox.html();
+	return this.jQueryBox.text();
 };
 
 matrixBox.prototype.getIsHidden = function() {
@@ -30,8 +30,16 @@ matrixBox.prototype.getId  = function() {
 	return this.id;
 };
 
-matrixBox.prototype.setKeyHandler = function(handler) {
-	this.jQueryBox.keyup(handler);
+matrixBox.prototype.setKeyHandler = function(event, handler) {
+  switch (event) {
+    case 'keyup':
+      this.jQueryBox.keyup(handler);
+      break;
+    case 'keydown':
+      this.jQueryBox.keydown(handler);
+    default:
+      return;
+  }
 }
 
 matrixBox.prototype.focus = function() {
