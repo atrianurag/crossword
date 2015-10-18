@@ -127,7 +127,7 @@ matrix.prototype.setKeyHandlers = function() {
         box.setText('');
       }
     }
-  }
+  };
 
   var helpSetKeyUpCallback = function(box) {
     return function (event) {
@@ -147,12 +147,37 @@ matrix.prototype.setKeyHandlers = function() {
         that.getNextBox(box).focus();
       }
     }
-  }
+  };
+
+  var helpSetHoverCallback = function(box) {
+    return function(event) {
+      box.highlightSelection();
+    }
+  };
+
+  var helpSetMouseoutCallback = function(box) {
+    return function(event) {
+      box.unHighlightSelection('highlight');
+    }
+  };
+
   this.rows.forEach(function(row) {
     for (var i = 0; i < window.app.maxCols; ++i) {
       var box = row.getBox(i);
-      box.setKeyHandler('keyup', helpSetKeyUpCallback(box));
-      box.setKeyHandler('keydown', helpSetKeyDownCallback(box));
+      box.bindEvent('keyup', helpSetKeyUpCallback(box));
+      box.bindEvent('keydown', helpSetKeyDownCallback(box));
+      box.bindEvent('hover', helpSetHoverCallback(box));
+      box.bindEvent('mouseout', helpSetMouseoutCallback(box));
     }
   });
+};
+
+matrix.prototype.hideBoxes = function() {
+  this.rows.forEach(function(row) {
+    row.getBoxes().forEach(function(box) {
+      if (!box.getText()) {
+        box.hide();
+      }
+    });
+  })
 };

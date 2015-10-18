@@ -10,8 +10,24 @@ matrixBox.prototype.log = function() {
   this.highlight();  
 }
 
-matrixBox.prototype.highlight = function() {
-  this.jQueryBox.addClass('highlight');
+matrixBox.prototype.highlightError = function() {
+  this.jQueryBox.addClass('highlight-error');
+};
+
+matrixBox.prototype.unHighlightError = function() {
+  this.jQueryBox.removeClass('highlight-error');
+};
+
+matrixBox.prototype.highlightSelection = function() {
+  this.jQueryBox.addClass('highlight-selection');
+};
+
+matrixBox.prototype.unHighlightSelection = function() {
+  this.jQueryBox.removeClass('highlight-selection');
+};
+
+matrixBox.prototype.hide = function() {
+  this.jQueryBox.addClass('no-show');
 };
 
 matrixBox.prototype.setText = function(text) {
@@ -30,13 +46,17 @@ matrixBox.prototype.getId  = function() {
 	return this.id;
 };
 
-matrixBox.prototype.setKeyHandler = function(event, handler) {
+matrixBox.prototype.bindEvent = function(event, handler) {
   switch (event) {
     case 'keyup':
       this.jQueryBox.keyup(handler);
       break;
     case 'keydown':
       this.jQueryBox.keydown(handler);
+    case 'hover':
+      this.jQueryBox.hover(handler);
+    case 'mouseout':
+      this.jQueryBox.mouseout(handler);
     default:
       return;
   }

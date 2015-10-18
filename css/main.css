@@ -103,6 +103,10 @@
   visibility: hidden;
 }
 
-.highlight {
+.highlight-error {
   border-color: #FF6666;
+}
+
+.highlight-selection {
+  border-color: #0000FF;
 }

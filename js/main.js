@@ -1,6 +1,6 @@
 window.app = {
   maxRows: 13,
-  maxCols: 12
+  maxCols: 14
 };
 
 var hiddenBoxes = [];
@@ -26,6 +26,9 @@ function init() {
   grid.setKeyHandlers();
   // Set the values in the gird.
   grid.setValues(values.words);
+
+  // Set hidden boxes.
+  grid.hideBoxes();
 }
 
 function addRow(container, rowId, grid) {
