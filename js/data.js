@@ -22,3 +22,20 @@ data.prototype.initialiseData = function(config) {
 		this.words.push(new word(element));
 	}, this);
 };
+
+data.prototype.getWordsWithPosition = function(x, y) {
+	var results = [];
+	config.values.forEach(function(value) {
+		if (value.direction == 'HORIZONTAL') {
+			if (x >= value.rowId && x <= value.rowId + value.answer.length) {
+				results.push(value);
+			}
+		} else if (direction == 'VERTICAL') {
+			if (y >= value.colId && y <= value.colId + value.answer.length) {
+				results.push(value);
+			}
+		}
+	});
+
+	return results;
+};

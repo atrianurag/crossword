@@ -1,6 +1,7 @@
 window.app = {
   maxRows: 13,
-  maxCols: 14
+  maxCols: 14,
+  values: {}
 };
 
 var hiddenBoxes = [];
@@ -21,6 +22,7 @@ function init() {
   
   // Get the values.
   var values = new data();
+  window.app.values = values;
   values.initialiseData(config);
   
   grid.setKeyHandlers();

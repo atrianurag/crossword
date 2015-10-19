@@ -1,3 +1,5 @@
 1. Add support for up and down keys.
 2. Handle errors on left and right keys on boundries.
 3. Remove the glimpse of old text that happens on keyup. Should be simple to handle in keydown.
+4. Handle cases like multiple backspaces, maybe the user wants to delete previous boxes?
+5. Move the getNextBox and getPreviousBox functions to matrixRow instead of matrix.

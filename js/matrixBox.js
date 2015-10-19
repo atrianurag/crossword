@@ -46,6 +46,14 @@ matrixBox.prototype.getId  = function() {
 	return this.id;
 };
 
+matrixBox.prototype.getRowId = function() {
+  return Math.floor(this.id / 1000);
+};
+
+matrixBox.prototype.getColId = function() {
+  return this.id % 1000;
+};
+
 matrixBox.prototype.bindEvent = function(event, handler) {
   switch (event) {
     case 'keyup':

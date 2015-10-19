@@ -2,6 +2,7 @@ function matrix() {
   // Array of row objects.
   // Blah.
   this.rows = [];
+  this.data = new data();
 }
 
 matrix.prototype.addRow = function(row) {
@@ -152,12 +153,14 @@ matrix.prototype.setKeyHandlers = function() {
   var helpSetHoverCallback = function(box) {
     return function(event) {
       box.highlightSelection();
+      that.selectWordBoxesArray(box);
     }
   };
 
   var helpSetMouseoutCallback = function(box) {
     return function(event) {
       box.unHighlightSelection('highlight');
+      $('.box').removeClass('highlight-selection');
     }
   };
 
@@ -180,4 +183,33 @@ matrix.prototype.hideBoxes = function() {
       }
     });
   })
+};
+
+matrix.prototype.selectWordBoxesArray = function(box) {
+  // First get which word(s) contain the box.
+  var results = [];
+  var x = box.getColId();
+  var y = box.getRowId();
+  window.app.values.words.forEach(function(value) {
+    if (value.direction == 'HORIZONTAL') {
+      if (y == value.rowId && x >= value.colId && x <= value.colId + value.length) {
+        results.push(value);
+      }
+    } else if (value.direction == 'VERTICAL') {
+      if (x == value.colId && y >= value.rowId && y <= value.rowId + value.length) {
+        results.push(value);
+      }
+    }
+  });
+  results.forEach(function(result) {
+    if (result.direction == 'HORIZONTAL') {
+      for (var x = result.colId; x < result.colId + result.length; ++x) {
+        this.getBox(x, result.rowId).highlightSelection();
+      }
+    } else if (result.direction == 'VERTICAL') {
+      for (var y = result.rowId; y < result.rowId + result.length; ++y) {
+        this.getBox(result.colId, y).highlightSelection();
+      }
+    }
+  }, this);
 };
