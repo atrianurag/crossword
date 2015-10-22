@@ -16,9 +16,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 60px;
+  font-size: 56px;
   border-radius: 6px;
-  font-family: Open Sans;
+  font-family: 'Roboto', sans-serif;
   color: transparent;
   text-shadow : 0 0 0 #000;
 }
@@ -26,7 +26,8 @@
 .container {
   display: flex;
   justify-content: center;
-  /*align-items: center;*/
+  background-color: #ECF1EF;
+
   flex-direction: column;
   width: 80%;
   height: auto;
