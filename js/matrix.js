@@ -29,14 +29,16 @@ matrix.prototype.getBox = function(colId, rowId) {
 };
 
 matrix.prototype.getNextBox = function(box) {
-  var id = box.getId();
-  var rowId = Math.floor(id / 1000);
-  var colId = id % 1000;
+  var rowId = box.getRowId();
+  var colId = box.getColId();
 
   var x;
 
   x = (colId == window.app.maxCols - 1 ? 0 : colId + 1);
 
+  // The next box is not at the end of the row.
+  // But it could still be a hidden box due to being further away
+  // from the edge of a word.
   if (x) {
     return this.getBox(x, rowId);
   }
@@ -45,12 +47,33 @@ matrix.prototype.getNextBox = function(box) {
 };
 
 matrix.prototype.getPreviousBox = function(box) {
-  var id = box.getId();
-  var rowId = Math.floor(id / 1000);
-  var colId = id % 1000;
+  var rowId = box.getRowId();
+  var colId = box.getColId();
 
   if (colId) {
     return this.getBox(colId - 1, rowId);
+  }
+
+  return undefined;
+};
+
+matrix.prototype.getAboveBox = function(box) {
+  var rowId = box.getRowId();
+  var colId = box.getColId();
+
+  if (rowId) {
+    return this.getBox(colId, rowId - 1);
+  }
+};
+
+matrix.prototype.getBelowBox = function(box) {
+  var rowId = box.getRowId();
+  var colId = box.getColId();
+
+  var y = (rowId == window.app.maxRows - 1 ? 0 : rowId + 1);
+
+  if (y) {
+    return this.getBox(colId, y);
   }
 
   return undefined;
@@ -142,7 +165,10 @@ matrix.prototype.setKeyHandlers = function() {
       case 46:
       // This will change, but for now the up and down arrows don't do anything.
       case 38:
+        that.getAboveBox(box).focus();
+        break;
       case 40:
+        that.getBelowBox(box).focus();
         break;
       default:
         that.getNextBox(box).focus();
