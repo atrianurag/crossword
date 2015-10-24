@@ -2,7 +2,7 @@ function word(element) {
 	this.id = element.id;
 	this.text = element.text;
 	this.answer = element.answer;
-	this.length = element.answer.length;
+	this.length = element.length;
 	this.rowId = element.rowId;
 	this.colId = element.colId;
 	this.direction = element.direction;
@@ -38,4 +38,43 @@ data.prototype.getWordsWithPosition = function(x, y) {
 	});
 
 	return results;
+};
+
+data.prototype.getUsedBoxes = function(x, y) {
+	// I should be ashamed of myself.
+	// This function is :(
+	// Please rewrite this like any real programmer would.
+	// :(
+
+	var usedBoxes = [];
+	config.values.forEach(function(value) {
+		if (value.direction == 'HORIZONTAL') {
+			for (var i = value.colId; i < value.colId + value.length; ++i) {
+				usedBoxes.push([i, value.rowId]);
+			}
+		} else {
+			for (var i = value.rowId; i < value.rowId + value.length; ++i) {
+				usedBoxes.push([value.colId, i]);
+			}
+		}
+	});
+
+	function contains(a, b) {
+		for (var i = 0; i < usedBoxes.length; ++i) {
+			if (usedBoxes[i][0] == a && usedBoxes[i][1] == b) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	var notUsedBoxes = [];
+	for (var x = 0; x < window.app.maxCols; ++x) {
+		for (var y = 0; y < window.app.maxRows; ++y) {
+			if (!contains(x, y)) {
+				notUsedBoxes.push([x, y]);
+			}
+		}
+	}
+	return notUsedBoxes;
 };

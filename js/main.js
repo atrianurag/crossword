@@ -23,14 +23,17 @@ function init() {
   // Get the values.
   var values = new data();
   window.app.values = values;
+  
   values.initialiseData(config);
   
   grid.setKeyHandlers();
   // Set the values in the gird.
-  grid.setValues(values.words);
+  // grid.setValues(values.words);
+
+  var usedBoxes = values.getUsedBoxes();
 
   // Set hidden boxes.
-  grid.hideBoxes();
+  grid.hideBoxes(usedBoxes);
 }
 
 function addRow(container, rowId, grid) {

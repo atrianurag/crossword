@@ -160,6 +160,9 @@ matrix.prototype.setKeyHandlers = function() {
   var helpSetMouseoutCallback = function(box) {
     return function(event) {
       box.unHighlightSelection('highlight');
+
+      // Note that we directly access all the boxes using jQuery here.
+      // This is done for performance reasons.
       $('.box').removeClass('highlight-selection');
     }
   };
@@ -175,14 +178,10 @@ matrix.prototype.setKeyHandlers = function() {
   });
 };
 
-matrix.prototype.hideBoxes = function() {
-  this.rows.forEach(function(row) {
-    row.getBoxes().forEach(function(box) {
-      if (!box.getText()) {
-        box.hide();
-      }
-    });
-  })
+matrix.prototype.hideBoxes = function(usedBoxes) {
+  usedBoxes.forEach(function(element) {
+    this.getBox(element[0], element[1]).hide();
+  }, this);
 };
 
 matrix.prototype.selectWordBoxesArray = function(box) {
