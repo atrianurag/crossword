@@ -28,6 +28,7 @@ matrixBox.prototype.unHighlightSelection = function() {
 
 matrixBox.prototype.hide = function() {
   this.jQueryBox.addClass('no-show');
+  this.isHidden = true;
 };
 
 matrixBox.prototype.setText = function(text) {

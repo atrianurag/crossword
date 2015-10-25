@@ -40,7 +40,10 @@ matrix.prototype.getNextBox = function(box) {
   // But it could still be a hidden box due to being further away
   // from the edge of a word.
   if (x) {
-    return this.getBox(x, rowId);
+    var result = this.getBox(x, rowId);
+    if (!result.getIsHidden()) {
+      return result;
+    }
   }
 
   return undefined;
@@ -51,7 +54,10 @@ matrix.prototype.getPreviousBox = function(box) {
   var colId = box.getColId();
 
   if (colId) {
-    return this.getBox(colId - 1, rowId);
+    var result = this.getBox(colId - 1, rowId);
+    if (!result.getIsHidden()) {
+      return result;
+    }
   }
 
   return undefined;
@@ -62,7 +68,10 @@ matrix.prototype.getAboveBox = function(box) {
   var colId = box.getColId();
 
   if (rowId) {
-    return this.getBox(colId, rowId - 1);
+    var result = this.getBox(colId, rowId - 1);
+    if (!result.getIsHidden()) {
+      return result;
+    }
   }
 };
 
@@ -73,7 +82,10 @@ matrix.prototype.getBelowBox = function(box) {
   var y = (rowId == window.app.maxRows - 1 ? 0 : rowId + 1);
 
   if (y) {
-    return this.getBox(colId, y);
+    var result = this.getBox(colId, y);
+    if (!result.getIsHidden()) {
+      return result;
+    }
   }
 
   return undefined;
@@ -154,31 +166,42 @@ matrix.prototype.setKeyHandlers = function() {
   };
 
   var helpSetKeyUpCallback = function(box) {
+    function handleBoxChange(currentBox) {
+      if (currentBox) {
+        currentBox.focus();
+        $('.box').removeClass('highlight-selection');
+        that.selectWordBoxesArray(currentBox);
+      }
+    }
+
     return function (event) {
       switch (event.which) {
       case 37:
-        that.getPreviousBox(box).focus();
+        handleBoxChange(that.getPreviousBox(box));
         break;
       // We shouldn't change the focus on backspace.
       case 8:
       // We shouldn't change the focus on delete.
       case 46:
-      // This will change, but for now the up and down arrows don't do anything.
       case 38:
-        that.getAboveBox(box).focus();
+        handleBoxChange(that.getAboveBox(box));
+        /*
+        boxNow.focus();
+        $('.box').removeClass('highlight-selection');
+        that.selectWordBoxesArray(boxNow);
+        */
         break;
       case 40:
-        that.getBelowBox(box).focus();
+        handleBoxChange(that.getBelowBox(box));
         break;
       default:
-        that.getNextBox(box).focus();
+        handleBoxChange(that.getNextBox(box));
       }
     }
   };
 
   var helpSetHoverCallback = function(box) {
     return function(event) {
-      box.highlightSelection();
       that.selectWordBoxesArray(box);
     }
   };
