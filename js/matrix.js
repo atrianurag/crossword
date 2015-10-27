@@ -174,6 +174,37 @@ matrix.prototype.setKeyHandlers = function() {
       }
     }
 
+    function textEntered(previousBox) {
+      // TODO (atri): This can be done better. Ideally we should
+      // determine the direction in which the user is typing and
+      // then only select those boxes. Right now we select the
+      // next horizontal box when available, and fallback to the
+      // next vertical.
+      var nextBox = that.getNextBox(previousBox) || 
+        that.getBelowBox(previousBox);
+
+      if (nextBox) {
+        nextBox.focus();
+        $('.box').removeClass('highlight-selection');
+        that.selectWordBoxesArray(nextBox);
+      }
+    }
+
+    function backspace(previousBox) {
+      // TODO (atri): This can be done better. Ideally we should
+      // determine the direction in which the user is deleting
+      // and select the direction likewise. Currently we use
+      // horizontal when we can, and vertical otherwise.
+      var nextBox = that.getPreviousBox(previousBox) || 
+        that.getAboveBox(previousBox);
+
+      if (nextBox) {
+        nextBox.focus();
+        $('.box').removeClass('highlight-selection');
+        that.selectWordBoxesArray(nextBox);
+      }
+    }
+
     return function (event) {
       switch (event.which) {
       case 37:
@@ -181,21 +212,22 @@ matrix.prototype.setKeyHandlers = function() {
         break;
       // We shouldn't change the focus on backspace.
       case 8:
+        backspace(box);
+        break;
       // We shouldn't change the focus on delete.
       case 46:
+        break;
       case 38:
         handleBoxChange(that.getAboveBox(box));
-        /*
-        boxNow.focus();
-        $('.box').removeClass('highlight-selection');
-        that.selectWordBoxesArray(boxNow);
-        */
         break;
       case 40:
         handleBoxChange(that.getBelowBox(box));
         break;
+      // Don't do anything on spacebar.
+      case 32:
+        break;
       default:
-        handleBoxChange(that.getNextBox(box));
+        textEntered(box);
       }
     }
   };
